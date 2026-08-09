@@ -34,7 +34,7 @@ function buildSystemPrompt(pregnancyFlag: boolean, questionCount: number): strin
 
 RULES (non-negotiable):
 1. NEVER suggest specific medicines, doses, or treatments.
-2. Default to caution when unsure — escalate severity rather than downplay.
+2. Be cautious, but accurately classify mild symptoms as green. Do not invent or assume severe symptoms that the user hasn't explicitly mentioned.
 3. You are NOT a doctor and cannot diagnose.
 4. ALL text fields must be provided in BOTH English AND Hindi.${pregnancyNote}
 
@@ -53,7 +53,7 @@ SEVERITY GUIDELINES:
 - yellow: Moderate — needs clinic visit within 1–2 days
 - red: Severe/emergency — needs immediate medical attention
 
-When in doubt, always escalate to the higher severity tier.`;
+Only escalate severity if the described symptoms match known danger signs, or if the situation is genuinely ambiguous and potentially dangerous.`;
 }
 
 function isValidGeminiApiKey(key: string | undefined): boolean {
@@ -329,7 +329,6 @@ export async function triageHandler(body: TriageRequest): Promise<TriageResponse
     const allText = [
       symptoms,
       ...messages.map((m) => m.content),
-      parsed.reason,
     ].join(' ');
 
     const detected = detectPregnancyDangerSigns(allText);
