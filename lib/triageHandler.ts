@@ -35,6 +35,7 @@ function buildSystemPrompt(pregnancyFlag: boolean, questionCount: number): strin
 RULES (non-negotiable):
 1. NEVER suggest specific medicines, doses, or treatments.
 2. Be cautious, but accurately classify mild symptoms as green. Do not invent or assume severe symptoms that the user hasn't explicitly mentioned.
+3. Pay strict attention to negations (e.g. "no", "none", "don't"). If a patient explicitly denies a symptom, you MUST NOT record it as a danger sign or escalate severity based on it.
 3. You are NOT a doctor and cannot diagnose.
 4. ALL text fields must be provided in BOTH English AND Hindi.${pregnancyNote}
 
@@ -157,7 +158,9 @@ function createRuleBasedFallback(
   questionCount: number,
   pregnancyFlag: boolean
 ): TriageResponse {
-  const fullText = [symptoms, ...messages.map((m) => m.content)].join(' ').toLowerCase();
+  // Only evaluate the patient's own words! Include symptoms and user replies, but exclude AI's questions.
+  const userMessages = messages.filter((m) => m.role === 'user').map((m) => m.content);
+  const fullText = [symptoms, ...userMessages].join(' ').toLowerCase();
 
   // If initial step and questionCount is 0, ask a clarifying question
   if (questionCount === 0) {
@@ -178,15 +181,22 @@ function createRuleBasedFallback(
 
   for (const kw of redKeywords) {
     if (fullText.includes(kw)) {
-      severity = 'red';
-      detected.push(kw.charAt(0).toUpperCase() + kw.slice(1));
+      // Basic negation check (e.g., "no chest pain", "not bleeding")
+      const isNegated = fullText.includes(`no ${kw}`) || fullText.includes(`not ${kw}`) || fullText.includes(`no severe ${kw}`);
+      if (!isNegated) {
+        severity = 'red';
+        detected.push(kw.charAt(0).toUpperCase() + kw.slice(1));
+      }
     }
   }
 
   if (severity !== 'red') {
     for (const kw of yellowKeywords) {
       if (fullText.includes(kw)) {
-        severity = 'yellow';
+        const isNegated = fullText.includes(`no ${kw}`) || fullText.includes(`not ${kw}`);
+        if (!isNegated) {
+          severity = 'yellow';
+        }
       }
     }
   }
