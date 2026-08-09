@@ -1,110 +1,268 @@
-# VitaNova AI 🩺
+<div align="center">
 
-> **AI-powered bilingual health triage for rural India**
-> 
-> VitaNova AI is an intelligent symptom triage tool powered by Google Gemini. It allows users in rural and underserved areas to describe their symptoms in English or Hindi, ask clarifying questions, and receive an instant, accurate triage assessment with clear severity levels and actionable next steps.
+# 🩺 VitaNova AI
 
----
+### AI-Powered Bilingual Health Triage for Rural India
 
-## ✨ Features
+**Describe your symptoms. Understand your risk. Know your next step.**
 
-- 🌐 **Bilingual English & Hindi**: Clarifying questions and triage results display both English and Hindi text simultaneously for maximum accessibility.
-- 🤖 **AI-Guided Symptom Triage**: Powered by Google Gemini to analyze symptoms, ask relevant follow-up questions, and assign a severity tier:
-  - 🟢 **Green**: Safe to manage at home
-  - 🟡 **Yellow**: Visit a clinic soon
-  - 🔴 **Red**: Emergency — seek immediate care
-- 🤰 **Pregnancy Safety Override**: Deterministic, code-level safety check that automatically forces **Red Severity** if any pregnancy danger sign is detected (e.g., vaginal bleeding, severe headache, blurred vision, swelling).
-- 🔊 **Voice Narration (Text-to-Speech)**: Reads triage results aloud in both English and Hindi using the browser's Web Speech API for low-literacy users.
-- 🎙️ **Voice Symptom Input**: Speech-to-text input powered by the Web Speech API for hands-free or spoken symptom reporting.
-- 🗺️ **Nearest PHC Directions**: Integrated location services to locate and navigate to the nearest Primary Health Centre (PHC) on Google Maps.
-- 📋 **Bilingual Action Cards**: Plain-language recommendations and step-by-step guidance formatted for easy reading.
+<br/>
+
+![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-4285F4?style=for-the-badge&logo=google)
+![Express](https://img.shields.io/badge/Express-5.2-000000?style=for-the-badge&logo=express)
+![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite)
+
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+<div align="center">
 
-- **Frontend**: React (v18.3.1), TypeScript (v5.6.2), Vite (v5.4.10)
-- **Styling & Animations**: Tailwind CSS (v3.4.19), Framer Motion (v12.42.2)
-- **Icons**: Lucide React (v1.27.0)
-- **AI Integration**: Google Generative AI SDK (`@google/generative-ai` v0.24.1) using the `gemini-flash-latest` model
-- **Backend Proxy**: Express (v5.2.1) + Node.js with `tsx` (v4.23.1) and `dotenv` (v17.4.2)
-- **Development Tooling**: Concurrently (v10.0.4) for running frontend & backend proxy simultaneously
+## 🌐 From Symptoms to the Right Care
 
----
+</div>
 
-## 🚀 Setup & Installation Instructions
+```mermaid
+flowchart LR
 
-### Prerequisites
-- Node.js 18.x or higher
-- npm 9.x or higher
-- A Google Gemini API key from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+    A["👤 Rural User<br/>Hindi / English"] 
+    B["🎙️ Voice / Text<br/>Symptom Input"]
+    C["🤖 Gemini AI<br/>Symptom Analysis"]
+    D{"🤰 Safety<br/>Override"}
+    E["🟢 GREEN<br/>Manage at Home"]
+    F["🟡 YELLOW<br/>Visit Clinic Soon"]
+    G["🔴 RED<br/>Emergency Care"]
+    H["📋 Bilingual<br/>Action Cards"]
+    I["🔊 Voice<br/>Narration"]
+    J["🗺️ Nearest PHC<br/>Directions"]
 
-### Steps
+    A --> B
+    B --> C
+    C --> D
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/mishratanu/VitaNova_AI.git
-   cd VitaNova_AI
-   ```
+    D -->|"No danger sign"| E
+    D -->|"Moderate risk"| F
+    D -->|"Danger detected"| G
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+    E --> H
+    F --> H
+    G --> H
 
-3. **Configure Environment Variables**
-   Create a `.env` file in the root directory (you can copy `.env.example`):
-   ```bash
-   cp .env.example .env
-   ```
-   Open `.env` and add your Gemini API key:
-   ```env
-   GEMINI_API_KEY=your_actual_gemini_api_key_here
-   ```
+    H --> I
+    H --> J
 
-   > 🔒 **Security Note**: The `.env` file is included in `.gitignore` and is never committed to Git repository control. Users running or deploying the project must provide their own Gemini API key in their local `.env` file.
-
-4. **Run the Application**
-   Start both the Vite dev server and the backend proxy concurrently:
-   ```bash
-   npm run dev
-   ```
-   Open your browser and navigate to `http://localhost:5173`.
-
----
-
-## 📁 Folder Structure
-
-```
-vitaNova AI/
-├── lib/
-│   └── triageHandler.ts       # Gemini API prompt engineering & pregnancy safety override
-├── server/
-│   └── index.ts               # Express backend server (proxies Gemini API calls safely)
-├── src/
-│   ├── components/
-│   │   ├── app/               # Triage flow steps (StepDescribe, StepQA, StepResult, StepAction)
-│   │   └── landing/           # Landing page hero & features sections
-│   ├── hooks/
-│   │   └── useTriage.ts       # State machine managing symptom intake, QA & result flow
-│   ├── pages/
-│   │   ├── AppPage.tsx        # Main triage app view
-│   │   └── LandingPage.tsx    # Landing page view
-│   ├── types/
-│   │   └── index.ts           # TypeScript interfaces for requests, responses & results
-│   ├── App.tsx                # Main router & layout shell
-│   └── index.css              # Custom Tailwind CSS rules & healthcare color tokens
-├── .env.example               # Template for required environment variables
-├── .gitignore                 # Excludes .env, node_modules, dist, logs
-├── package.json               # Project dependencies and script declarations
-├── vite.config.ts             # Vite server config & API proxy configuration
-└── README.md                  # Project documentation
+    style A fill:#0f172a,stroke:#38bdf8,color:#fff
+    style B fill:#0f172a,stroke:#38bdf8,color:#fff
+    style C fill:#172554,stroke:#60a5fa,color:#fff
+    style D fill:#4c1d95,stroke:#c084fc,color:#fff
+    style E fill:#14532d,stroke:#22c55e,color:#fff
+    style F fill:#713f12,stroke:#eab308,color:#fff
+    style G fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style H fill:#164e63,stroke:#22d3ee,color:#fff
+    style I fill:#164e63,stroke:#22d3ee,color:#fff
+    style J fill:#164e63,stroke:#22d3ee,color:#fff
 ```
 
 ---
 
-## ⚠️ Medical Disclaimer
+## 🚦 Interactive Triage Guide
 
-> **VitaNova AI is a medical triage assistant designed for informational and preliminary assessment purposes only. It is NOT a diagnostic tool and does NOT provide medical advice, diagnosis, or treatment.**
->
-> VitaNova AI should never be used as a substitute for professional medical evaluation by a qualified healthcare provider. In the event of a medical emergency, immediately contact emergency services (e.g., dial **108** in India) or visit the nearest healthcare facility.
+<details>
+<summary>🟢 <b>GREEN — Safe to Manage at Home</b></summary>
+
+<br>
+
+Symptoms indicate **low immediate risk** based on the information provided.
+
+### What VitaNova recommends
+
+- Rest and monitor symptoms
+- Follow basic self-care guidance
+- Monitor for worsening symptoms
+- Seek medical care if the condition changes
+
+> VitaNova does not diagnose the condition. It provides preliminary triage guidance only.
+
+</details>
+
+<details>
+<summary>🟡 <b>YELLOW — Visit a Clinic Soon</b></summary>
+
+<br>
+
+Symptoms may require **professional medical evaluation**.
+
+### What VitaNova recommends
+
+- Visit your nearest clinic / PHC
+- Do not ignore worsening symptoms
+- Carry relevant medical information
+- Follow the action steps generated by VitaNova
+
+</details>
+
+<details>
+<summary>🔴 <b>RED — Emergency</b></summary>
+
+<br>
+
+Potentially serious symptoms have been detected.
+
+### 🚨 Immediate action
+
+**Seek emergency medical care immediately.**
+
+In India, contact emergency services or visit the nearest healthcare facility.
+
+</details>
+
+<details>
+<summary>🤰 <b>Pregnancy Safety Override</b></summary>
+
+<br>
+
+VitaNova includes a **deterministic safety layer** independent of the AI-generated severity.
+
+Certain pregnancy danger signs can automatically trigger:
+
+```text
+NORMAL AI FLOW
+      ↓
+Pregnancy danger sign detected
+      ↓
+SAFETY OVERRIDE
+      ↓
+🔴 RED — IMMEDIATE CARE
+```
+
+Examples include:
+
+- Vaginal bleeding
+- Severe headache
+- Blurred vision
+- Significant swelling
+- Other configured pregnancy danger indicators
+
+This mechanism is intentionally implemented at the code level rather than relying solely on the LLM.
+
+</details>
+
+---
+
+<div align="center">
+
+# 🧠 How VitaNova Thinks
+
+</div>
+
+<details open>
+<summary>01 — 🗣️ Describe Your Symptoms</summary>
+
+<br>
+
+Users can describe their symptoms using:
+
+- 🇬🇧 English
+- 🇮🇳 Hindi
+- 🎙️ Voice input
+- ⌨️ Text input
+
+Designed for users with limited digital literacy.
+
+</details>
+
+<details>
+<summary>02 — 🤖 AI-Guided Questions</summary>
+
+<br>
+
+Gemini analyzes the initial symptoms and generates relevant clarifying questions.
+
+Instead of asking users to understand complicated medical terminology, VitaNova progressively collects the information required for preliminary triage.
+
+</details>
+
+<details>
+<summary>03 — 🛡️ Safety Layer</summary>
+
+<br>
+
+Before the final severity is presented, deterministic safety rules are evaluated.
+
+**AI + Code-Level Safety**
+
+```text
+User Input
+    ↓
+Gemini Analysis
+    ↓
+Safety Rules
+    ↓
+Final Triage
+```
+
+The pregnancy safety override is designed so that critical configured danger signs cannot simply be ignored by the model.
+
+</details>
+
+<details> 
+<summary>04 — 🚦 Severity Assessment</summary> 
+
+<br>
+
+VitaNova categorizes the situation into:
+
+| Level | Meaning |
+|---|---|
+| 🟢 Green | Manage at home |
+| 🟡 Yellow | Visit clinic soon |
+| 🔴 Red | Seek immediate care |
+
+</details>
+
+<details> 
+<summary>05 — 📋 Actionable Guidance</summary> 
+
+<br>
+
+The final result is converted into simple bilingual action cards.
+
+Users receive:
+
+English + हिंदी
+
+at the same time.
+
+</details>
+
+<details> 
+<summary>06 — 🗺️ Connect to Care</summary> 
+
+<br>
+
+When professional care is recommended, VitaNova can use location services to help users find the nearest Primary Health Centre.
+
+Symptoms → Triage → Action → Healthcare Facility
+
+</details>
+
+---
+
+## ✨ Core Features
+
+<div align="center">
+
+| 🩺 Feature | 💡 What it does |
+|:---:|---|
+| 🌐 **Bilingual** | English + Hindi simultaneously |
+| 🤖 **AI Triage** | Gemini-powered symptom assessment |
+| 🤰 **Safety Override** | Deterministic pregnancy danger detection |
+| 🎙️ **Voice Input** | Speak symptoms instead of typing |
+| 🔊 **Voice Output** | Hear results in English / Hindi |
+| 🚦 **Severity Levels** | Green / Yellow / Red |
+| 📋 **Action Cards** | Simple step-by-step recommendations |
+| 🗺️ **PHC Locator** | Find the nearest Primary Health Centre |
+
+</div>
