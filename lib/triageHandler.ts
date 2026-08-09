@@ -166,15 +166,15 @@ function createRuleBasedFallback(
   if (questionCount === 0) {
     return {
       type: 'question',
-      question: 'How long have you had these symptoms, and do you also have any high fever, severe headache, or difficulty breathing?',
-      question_en: 'How long have you had these symptoms, and do you also have any high fever, severe headache, or difficulty breathing?',
-      question_hi: 'आपको ये लक्षण कब से हैं, और क्या आपको तेज़ बुखार, गंभीर सिरदर्द या सांस लेने में तकलीफ भी है?',
+      question: 'Can you describe how you feel in a bit more detail? For example, do you have a high fever, severe pain, or trouble breathing?',
+      question_en: 'Can you describe how you feel in a bit more detail? For example, do you have a high fever, severe pain, or trouble breathing?',
+      question_hi: 'क्या आप अपनी परेशानी के बारे में थोड़ा और बता सकते हैं? उदाहरण के लिए, क्या आपको तेज़ बुखार, बहुत दर्द, या सांस लेने में तकलीफ है?',
     };
   }
 
   // Determine severity based on symptom keywords
-  const redKeywords = ['chest pain', 'bleeding', 'unconscious', 'faint', 'convulsion', 'seizure', 'severe headache', 'breathlessness', 'cannot breathe', 'blurred vision', 'dizziness'];
-  const yellowKeywords = ['fever', 'vomiting', 'diarrhea', 'weakness', 'rash', 'pain', 'cough'];
+  const redKeywords = ['chest pain', 'bleeding', 'unconscious', 'faint', 'convulsion', 'seizure', 'severe headache', 'breathlessness', 'cannot breathe', 'blurred vision'];
+  const yellowKeywords = ['fever', 'vomiting', 'diarrhea', 'weakness', 'rash', 'pain', 'cough', 'dizziness'];
 
   let severity: 'green' | 'yellow' | 'red' = 'green';
   let detected: string[] = [];
