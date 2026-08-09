@@ -20,6 +20,6 @@ export default defineConfig({
     // Uses $PORT from Render's environment; falls back to 4173 locally.
     host: '0.0.0.0',
     port: Number(process.env.PORT) || 4173,
-    allowedHosts: 'all',
+    allowedHosts: true,
   },
 });
