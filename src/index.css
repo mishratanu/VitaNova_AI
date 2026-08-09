@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #FAF9F6;
+    color: #1A1A18;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1A1A18;
+  }
+
+  /* Remove default input/button styling */
+  input, textarea, button, select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  /* Focus visible — keyboard accessible */
+  :focus-visible {
+    outline: 2px solid #0F6B62;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* ── Severity pill badges ── */
+  .badge-green {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-severity-green-bg text-severity-green border border-severity-green-border;
+  }
+  .badge-yellow {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-severity-yellow-bg text-severity-yellow border border-severity-yellow-border;
+  }
+  .badge-red {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-severity-red-bg text-severity-red border border-severity-red-border;
+  }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-3xl shadow-card p-7 md:p-8 border border-gray-100/80;
+  }
+  .card-hover {
+    @apply card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-white font-semibold rounded-2xl
+           transition-all duration-200 ease-out hover:bg-primary-600 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]
+           focus-visible:outline-2 focus-visible:outline-primary min-h-[44px] cursor-pointer;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-50 text-primary font-semibold rounded-2xl
+           border border-primary-100 transition-all duration-200 ease-out hover:bg-primary-100 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]
+           focus-visible:outline-2 focus-visible:outline-primary min-h-[44px] cursor-pointer;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-ink-muted font-medium rounded-2xl
+           transition-all duration-200 ease-out hover:bg-primary-50 hover:text-primary active:scale-[0.98] min-h-[44px] cursor-pointer;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-severity-red text-white font-semibold rounded-2xl
+           transition-all duration-200 ease-out hover:bg-red-700 hover:scale-[1.02] hover:shadow-red-glow active:scale-[0.98] min-h-[44px] cursor-pointer;
+  }
+
+  /* ── Inputs ── */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-ink
+           placeholder:text-ink-light transition-all duration-200
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
+           min-h-[44px];
+  }
+  .textarea-field {
+    @apply w-full px-4 py-4 bg-white border border-gray-200 rounded-2xl text-ink
+           placeholder:text-ink-light transition-all duration-200 resize-none
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10;
+  }
+
+  /* ── Section spacing ── */
+  .section {
+    @apply py-16 md:py-24 px-4 md:px-8;
+  }
+  .container-max {
+    @apply max-w-6xl mx-auto;
+  }
+
+  /* ── Gradient text ── */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent;
+  }
+
+  /* ── Shimmer loading skeleton ── */
+  .skeleton {
+    @apply rounded-xl bg-gray-200 animate-pulse;
+    background: linear-gradient(90deg, #f0f0ee 25%, #e4e4e0 50%, #f0f0ee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* ── Chip / tag ── */
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary text-sm font-medium rounded-full
+           border border-primary-100 cursor-pointer transition-all duration-150
+           hover:bg-primary hover:text-white hover:border-primary active:scale-95 min-h-[36px];
+  }
+  .chip-selected {
+    @apply bg-primary text-white border-primary;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
